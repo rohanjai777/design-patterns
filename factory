@@ -1,0 +1,49 @@
+interface Transport{
+    void delivery();
+}
+
+class Truck implements Transport{
+    public void delivery(){
+        System.out.println("Product is delivered via Truck");
+    }
+}
+
+class Ship implements Transport{
+    public void delivery(){
+        System.out.println("Product is delivered via Ship");
+    }
+}
+
+abstract class Logistics{
+    public abstract Transport createTransport();
+    public void checkDeliveryVehical(){
+        Transport t = createTransport();
+        t.delivery();
+    }
+}
+
+class RoadLogistics extends Logistics{
+    public Transport createTransport(){
+        return new Truck();
+    }
+}
+
+class SeaLogistics extends Logistics{
+    public Transport createTransport(){
+        return new Ship();
+    }
+}
+
+public class Client {
+    private static Logistics logistics; //create a logistics service
+    public static void main(String args[]) {
+        //check in config which logistic type you prefer
+        String config = "Sea"; //readFromConfig()
+        if(config == "Road"){
+            logistics = new RoadLogistics();
+        }else if(config == "Sea"){
+            logistics = new SeaLogistics();
+        }
+        logistics.checkDeliveryVehical();
+    }
+}
